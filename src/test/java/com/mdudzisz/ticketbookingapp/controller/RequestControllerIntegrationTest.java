@@ -1,11 +1,12 @@
 package com.mdudzisz.ticketbookingapp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.Multimap;
 import com.mdudzisz.ticketbookingapp.model.Movie;
+import com.mdudzisz.ticketbookingapp.model.Screening;
 import com.mdudzisz.ticketbookingapp.service.BookingService;
+import com.mdudzisz.ticketbookingapp.service.SortedScreeningListing;
 import com.mdudzisz.ticketbookingapp.service.TimeInterval;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,36 +37,38 @@ public class RequestControllerIntegrationTest {
     @MockBean
     private BookingService bookingService;
 
-    public static Multimap<Movie, Timestamp> serviceResult;
+    private final SortedScreeningListing serviceResult = new SortedScreeningListing();
 
-    static {
-        serviceResult = LinkedListMultimap.create();
-        serviceResult.putAll(new Movie("La Vite E Bella", "A nice movie."),
-                List.of(
-                        new Timestamp(parseDateTime("2021-05-17T12:00:00Z").getTimeInMillis()),
-                        new Timestamp(parseDateTime("2021-05-17T14:00:00Z").getTimeInMillis())
-                ));
-        serviceResult.put(new Movie("Gladiator", "A cool movie."),
-                new Timestamp(parseDateTime("2021-05-17T14:00:00Z").getTimeInMillis()));
+    @Before
+    public void setUp() {
+        serviceResult.addScreening(new Screening(1, 1,
+                new Timestamp(parseDateTime("2021-05-17T12:00:00").getTimeInMillis()),
+                new Movie(1, "La Vita E Belle", "A nice movie.")));
+
+        serviceResult.addScreening(new Screening(1, 1,
+                new Timestamp(parseDateTime("2021-05-17T14:00:00").getTimeInMillis()),
+                new Movie(1, "La Vita E Belle", "A nice movie.")));
+
+        serviceResult.addScreening(new Screening(1, 1,
+                new Timestamp(parseDateTime("2021-05-17T14:00:00").getTimeInMillis()),
+                new Movie(2, "Gladiator", "A cool movie.")));
     }
 
     @Test
     public void listScreeningsTest_validTwoParamQuery() throws Exception {
-        Map<String, String> query = Map.of(
-                "from", "2021-05-17T12:00:00+02:00", "to", "2021-05-31T12:00:00+02:00"
-        );
+
+        final String fromString = "2021-05-17T12:00:00";
+        final String toString = "2021-05-31T12:00:00";
+
+        Map<String, String> query = Map.of("from", fromString, "to", toString);
 
         given(bookingService.getScreeningsListing(fromQueryMap(query))).willReturn(serviceResult);
 
         MockHttpServletResponse controllerResponse = client.perform(
-                get("/book/list-screenings?from=2021-05-17T12:00:00+02:00&to=2021-05-31T12:00:00+02:00"))
+                get("/book/list-screenings?from=" + fromString + "&to=" + toString))
                 .andReturn().getResponse();
 
-        ScreeningList queryResult = ScreeningList.fromMultimap(serviceResult);
-
-        ObjectMapper mapper = new ObjectMapper();
-        String expectedBody = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(queryResult);
-
+        String expectedBody = new ObjectMapper().writeValueAsString(serviceResult.getAllScreenings());
         assertEquals(expectedBody, controllerResponse.getContentAsString());
     }
 
@@ -78,11 +80,7 @@ public class RequestControllerIntegrationTest {
         MockHttpServletResponse controllerResponse = client.perform(get("/book/list-screenings"))
                 .andReturn().getResponse();
 
-        ScreeningList queryResult = ScreeningList.fromMultimap(serviceResult);
-
-        ObjectMapper mapper = new ObjectMapper();
-        String expectedBody = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(queryResult);
-
+        String expectedBody = new ObjectMapper().writeValueAsString(serviceResult.getAllScreenings());
         assertEquals(expectedBody, controllerResponse.getContentAsString());
     }
 
@@ -90,7 +88,7 @@ public class RequestControllerIntegrationTest {
     public void listScreeningsTest_invalidQueryTags_oneParam() throws Exception {
 
         MockHttpServletResponse controllerResponse = client
-                .perform(get("/book/list-screenings?to=2021-05-31T12:00:00+02:00"))
+                .perform(get("/book/list-screenings?to=2021-05-31T12:00:00"))
                 .andReturn().getResponse();
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), controllerResponse.getStatus());
@@ -100,10 +98,9 @@ public class RequestControllerIntegrationTest {
     public void listScreeningsTest_invalidQueryParams() throws Exception {
 
         MockHttpServletResponse controllerResponse = client.perform(
-                get("/book/list-screenings?from=bad-value&to=2021-05-31T12:00:00+02:00"))
+                get("/book/list-screenings?from=bad-value&to=2021-05-31T12:00:00"))
                 .andReturn().getResponse();
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), controllerResponse.getStatus());
     }
-
 }

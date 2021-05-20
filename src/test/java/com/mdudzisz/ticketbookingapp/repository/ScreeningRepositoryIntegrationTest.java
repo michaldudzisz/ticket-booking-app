@@ -35,7 +35,7 @@ public class ScreeningRepositoryIntegrationTest {
         List<Screening> storedScreenings = List.of(
                 new Screening(1, new Timestamp(100), storedMovies.get(0)),
                 new Screening(2, new Timestamp(200), storedMovies.get(0)),
-                new Screening(1, new Timestamp(300), storedMovies.get(1))
+                new Screening(2, new Timestamp(300), storedMovies.get(1))
         );
         storedScreenings.forEach(entityManager::persistAndFlush);
 

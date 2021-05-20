@@ -20,15 +20,6 @@ public class TimeInterval {
     private final Timestamp from;
     private final Timestamp to;
 
-    public TimeInterval(Timestamp start, Timestamp end) {
-        if (start.getTime() <= end.getTime()) {
-            from = start;
-            to = end;
-        } else {
-            throw new IllegalArgumentException("End time in time interval cannot anticipate start time.");
-        }
-    }
-
     public static TimeInterval fromQueryMap(Map<String, String> queryMap) {
         TimeInterval interval;
         if (queryMap.isEmpty()) {
@@ -42,6 +33,15 @@ public class TimeInterval {
             }
         }
         return interval;
+    }
+
+    private TimeInterval(Timestamp start, Timestamp end) {
+        if (start.getTime() <= end.getTime()) {
+            from = start;
+            to = end;
+        } else {
+            throw new IllegalArgumentException("End time in time interval cannot anticipate start time.");
+        }
     }
 
     private static TimeInterval createIntervalWithinDayFromNow() {
