@@ -1,9 +1,9 @@
-DROP TABLE IF EXISTS movies;
-DROP TABLE IF EXISTS seat_rows;
 DROP TABLE IF EXISTS booked_seats;
+DROP TABLE IF EXISTS seat_rows;
 DROP TABLE IF EXISTS reservations;
-DROP TABLE IF EXISTS customers;
 DROP TABLE IF EXISTS screenings;
+DROP TABLE IF EXISTS movies;
+DROP TABLE IF EXISTS customers;
 DROP TABLE IF EXISTS rooms;
 
 
@@ -19,9 +19,9 @@ CREATE TABLE rooms (
 
 CREATE TABLE seat_rows (
   room_id INT NOT NULL,
-  row_start INT NOT NULL,
-  row_end INT NOT NULL,
-  primary key (room_id, row_start),
+  row_nr INT NOT NULL,
+  row_length INT NOT NULL,
+  primary key (room_id, row_nr),
   foreign key (room_id) references rooms(id)
 );
 
@@ -53,10 +53,12 @@ CREATE TABLE reservations (
 
 CREATE TABLE booked_seats (
   screening_id INT NOT NULL,
-  nr INT NOT NULL,
+  row_nr INT NOT NULL,
+  seat_nr INT NOT NULL,
   reservation_id INT,
   foreign key (screening_id) references screenings(id),
   foreign key (reservation_id) references reservations(id),
-  primary key (screening_id, nr)
+  primary key (screening_id, row_nr, seat_nr)
 );
 
+-- TO DO constraint, that seat_nr <= row_nr

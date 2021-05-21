@@ -3,7 +3,7 @@ package com.mdudzisz.ticketbookingapp.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mdudzisz.ticketbookingapp.model.Movie;
 import com.mdudzisz.ticketbookingapp.model.Screening;
-import com.mdudzisz.ticketbookingapp.service.BookingService;
+import com.mdudzisz.ticketbookingapp.service.ScreeningsListingService;
 import com.mdudzisz.ticketbookingapp.service.SortedScreeningListing;
 import com.mdudzisz.ticketbookingapp.service.TimeInterval;
 import org.junit.Before;
@@ -35,7 +35,7 @@ public class RequestControllerIntegrationTest {
     private MockMvc client;
 
     @MockBean
-    private BookingService bookingService;
+    private ScreeningsListingService screeningsListingService;
 
     private final SortedScreeningListing serviceResult = new SortedScreeningListing();
 
@@ -62,7 +62,7 @@ public class RequestControllerIntegrationTest {
 
         Map<String, String> query = Map.of("from", fromString, "to", toString);
 
-        given(bookingService.getScreeningsListing(fromQueryMap(query))).willReturn(serviceResult);
+        given(screeningsListingService.fetchScreeningsListing(fromQueryMap(query))).willReturn(serviceResult);
 
         MockHttpServletResponse controllerResponse = client.perform(
                 get("/book/list-screenings?from=" + fromString + "&to=" + toString))
@@ -75,7 +75,7 @@ public class RequestControllerIntegrationTest {
     @Test
     public void listScreeningsTest_emptyQuery() throws Exception {
 
-        given(bookingService.getScreeningsListing(any(TimeInterval.class))).willReturn(serviceResult);
+        given(screeningsListingService.fetchScreeningsListing(any(TimeInterval.class))).willReturn(serviceResult);
 
         MockHttpServletResponse controllerResponse = client.perform(get("/book/list-screenings"))
                 .andReturn().getResponse();
