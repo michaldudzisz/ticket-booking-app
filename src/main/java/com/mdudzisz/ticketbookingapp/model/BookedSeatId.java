@@ -1,18 +1,19 @@
 package com.mdudzisz.ticketbookingapp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.Column;
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookedSeatId implements Serializable {
 
     @Column(name = "screening_id")
+    @JsonIgnore
     private long screeningId;
 
     @Column(name = "row_nr")

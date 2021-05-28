@@ -1,10 +1,7 @@
 package com.mdudzisz.ticketbookingapp.controller;
 
 import com.mdudzisz.ticketbookingapp.model.RoomPlan;
-import com.mdudzisz.ticketbookingapp.service.ScreeningsListingService;
-import com.mdudzisz.ticketbookingapp.service.SeatBookingService;
-import com.mdudzisz.ticketbookingapp.service.SortedScreeningListing;
-import com.mdudzisz.ticketbookingapp.service.TimeInterval;
+import com.mdudzisz.ticketbookingapp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +44,7 @@ public class RequestController {
         try {
             RoomPlan roomPlan = seatBookingService.fetchRoomPlan(screeningIg);
 
-            return new ResponseEntity<>(roomPlan.getFreeSeats(), HttpStatus.OK);
+            return new ResponseEntity<>(roomPlan.getSeatingSchema(), HttpStatus.OK);
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
@@ -55,4 +52,22 @@ public class RequestController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping(value = "/make-reservation", consumes = {"application/JSON"}, produces = {"application/JSON"})
+    public ResponseEntity<Object> makeReservation(@RequestBody ReservationRequest reservationRequest) {
+        try {
+            reservationRequest.validate();
+            reservationRequest.fillData();
+
+            ReservationConfirmation confirmation = seatBookingService.makeReservation(reservationRequest);
+
+            return new ResponseEntity<>(confirmation, HttpStatus.OK);
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

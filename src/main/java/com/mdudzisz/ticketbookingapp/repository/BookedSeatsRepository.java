@@ -11,4 +11,5 @@ import java.util.List;
 public interface BookedSeatsRepository extends CrudRepository<BookedSeat, BookedSeatId> {
 
     List<BookedSeat> findByScreeningId(long screeningId);
+
 }

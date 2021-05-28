@@ -1,10 +1,7 @@
 package com.mdudzisz.ticketbookingapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -29,8 +26,8 @@ public class BookedSeat {
     @Column(name = "seat_nr")
     private int seatNr;
 
-    @Column(name = "reservation_id")
     @JsonIgnore
-    private int reservationId;
+    @ManyToOne
+    private Reservation reservation;
 
 }

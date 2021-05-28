@@ -1,64 +1,29 @@
-DROP TABLE IF EXISTS booked_seats;
-DROP TABLE IF EXISTS seat_rows;
-DROP TABLE IF EXISTS reservations;
-DROP TABLE IF EXISTS screenings;
-DROP TABLE IF EXISTS movies;
-DROP TABLE IF EXISTS customers;
-DROP TABLE IF EXISTS rooms;
+INSERT INTO movies (title, description) VALUES ('La Vita E Bella', 'A nice movie.');
+INSERT INTO movies (title, description) VALUES ('Gladiator', 'A cool movie.');
+
+INSERT INTO rooms (id) VALUES (1);
+INSERT INTO rooms (id) VALUES (2);
+
+INSERT INTO screenings (room_id, movie_id, date) VALUES (1, 1, parsedatetime('30-05-2021 12:00:00.00', 'dd-MM-yyyy HH:mm:ss.SS'));
+INSERT INTO screenings (room_id, movie_id, date) VALUES (1, 1, parsedatetime('30-05-2021 14:15:00.00', 'dd-MM-yyyy HH:mm:ss.SS'));
+INSERT INTO screenings (room_id, movie_id, date) VALUES (2, 2, parsedatetime('30-05-2021 14:15:00.00', 'dd-MM-yyyy HH:mm:ss.SS'));
+
+INSERT INTO seat_rows (room_id, row_nr, row_length) VALUES (1, 1, 5);
+INSERT INTO seat_rows (room_id, row_nr, row_length) VALUES (1, 2, 5);
 
 
-CREATE TABLE movies (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(70) NOT NULL,
-  description VARCHAR(500) DEFAULT NULL
-);
+INSERT INTO reservations (screening_id, first_name, last_name, done) VALUES (1, 'Michał', 'Dudzisz', parsedatetime('29-05-2021 12:00:00.00', 'dd-MM-yyyy HH:mm:ss.SS'));
 
-CREATE TABLE rooms (
-  id INT PRIMARY KEY
-);
 
-CREATE TABLE seat_rows (
-  room_id INT NOT NULL,
-  row_nr INT NOT NULL,
-  row_length INT NOT NULL,
-  primary key (room_id, row_nr),
-  foreign key (room_id) references rooms(id)
-);
+INSERT INTO booked_seats (screening_id, row_nr, seat_nr, reservation_id) VALUES (1, 1, 2, 1);
+INSERT INTO booked_seats (screening_id, row_nr, seat_nr, reservation_id) VALUES (1, 1, 3, 1);
+INSERT INTO booked_seats (screening_id, row_nr, seat_nr, reservation_id) VALUES (1, 1, 4, 1);
 
--- TO DO validate seat rows
+INSERT INTO ticket_types (type_name, price, valid) VALUES ('kid', 9.50, 1);
+INSERT INTO ticket_types (type_name, price, valid) VALUES ('student', 12.50, 1);
+INSERT INTO ticket_types (type_name, price, valid) VALUES ('normal', 19.50, 1);
 
-CREATE TABLE screenings (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  room_id INT NOT NULL,
-  movie_id INT NOT NULL,
-  date TIMESTAMP NOT NULL,
-  foreign key (room_id) references rooms(id),
-  foreign key (movie_id) references movies(id)
-);
+--- http://localhost:8080/book/list-screenings?from=2021-05-17T12:10:52Z&to=2021-05-31T12:10:52Z
 
-CREATE TABLE customers (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(50),
-  last_name VARCHAR(50)
-);
-
-CREATE TABLE reservations (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  screening_id INT NOT NULL,
-  customer_id INT NOT NULL,
-  done TIMESTAMP NOT NULL,
-  foreign key (screening_id) references screenings(id),
-  foreign key (customer_id) references customers(id)
-);
-
-CREATE TABLE booked_seats (
-  screening_id INT NOT NULL,
-  row_nr INT NOT NULL,
-  seat_nr INT NOT NULL,
-  reservation_id INT,
-  foreign key (screening_id) references screenings(id),
-  foreign key (reservation_id) references reservations(id),
-  primary key (screening_id, row_nr, seat_nr)
-);
-
--- TO DO constraint, that seat_nr <= row_nr
+-- java -cp C:\Users\micha\.m2\repository\com\h2database\h2\1.4.200\h2-1.4.200.jar org.h2.tools.RunScript -user sa -password password -url jdbc:h2:./database/cinema -script ./da
+--   tabase/schema.sql

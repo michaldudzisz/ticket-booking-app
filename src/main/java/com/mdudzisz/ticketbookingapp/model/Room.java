@@ -1,5 +1,6 @@
 package com.mdudzisz.ticketbookingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class Room {
 
     @Id
     @Column(name = "id")
+    @JsonProperty("roomNr")
     private int number;
 
     @OneToMany(fetch = FetchType.EAGER)
