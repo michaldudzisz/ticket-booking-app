@@ -1,0 +1,9 @@
+<Configuration>
+    <Appenders>
+        <File name="fout" fileName="ticket-app.log" append="true">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %m%nw</Pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+</Configuration>

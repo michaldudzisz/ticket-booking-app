@@ -1,0 +1,29 @@
+package com.mdudzisz.ticketbookingapp.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@IdClass(SeatRowId.class)
+@Entity(name = "seat_rows")
+public class SeatRow {
+
+    @Id
+    @Column(name = "room_id")
+    private long roomId;
+
+    @Id
+    @Column(name = "row_nr")
+    private int rowNr;
+
+    @Column(name = "row_length")
+    private int length;
+
+}
