@@ -2,7 +2,7 @@
 
 This is a simple system for ticket booking. Program uses Java 11 and Maven, which takes care of downloading additional dependencies, building, testing and running app.
 
-The default port for application is 8080, you can change it in /resources/application.properties file. App uses persisten H2 database, that should be downloaded by Maven and created by mentioned later scripts.
+The default port for application is 8080, you can change it in /resources/application.properties file. App uses persistent H2 database, that should be downloaded by Maven and created by mentioned later scripts.
 
 App has three endpoints:
 
@@ -204,9 +204,9 @@ This data is for now validated in server app code.
 
 ## Installation
 
-If you don't have Java and Maven on your machine, you can run `sudo apt-get install maven` in your terminal - it should download both required Maven and Java Development Kit.
+If you don't have Java and Maven on your machine, you can run `sudo apt-get install maven` (or your distro equivalent) in your terminal - it should download both required Maven and Java Development Kit.
 
-**Important** - in next step I assumed, that your Maven repository is located in default location which is `~/.m2/repository` for Linux - if it is different on your machine, change corresponding path in `/database/database_setup.sh` script (on Mac it should be `/Users/<user_name>/.m2/repository`)
+**Important** - in next step I assumed, that your Maven repository is located in default location which is `~/.m2/repository` for Linux - if it is different on your machine, change corresponding path in `/database/database_setup.sh` script (on Mac it should be `/Users/<user_name>/.m2/repository`). 
 
 Next step is to run included in project script:
 
@@ -230,7 +230,7 @@ Simple script performing request has been added to a project. Please run it usin
 
 from project main directory.
 
-What does the script do is:
+What the script does is:
 
 1. Fetching available screenings in given time period.
 2. Fetching available seats for chosen screening.
@@ -259,3 +259,5 @@ Well, next step to improve the app should be to test it better.
   performance if there is a lot of search results. I could do it in next step.   
 
 * I think that some service helper/data storage classes could be written better to make better use of Spring's dependency injection - maybe the code would be easier to test.
+
+* 
