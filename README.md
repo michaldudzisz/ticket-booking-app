@@ -2,7 +2,7 @@
 
 This is a simple system for ticket booking. Program uses Java 11 and Maven, which takes care of downloading additional dependencies, building, testing and running app.
 
-The default port for application is 8080, you can change it in /resources/application.properties file. 
+The default port for application is 8080, you can change it in /resources/application.properties file. App uses persisten H2 database, that should be downloaded by Maven and created by mentioned later scripts.
 
 App has three endpoints:
 
@@ -200,6 +200,7 @@ Attempts to make data valid in mentioned areas has been made:
 * There cannot be a single place left in a row between already reserved seats
 * System handles Polish characters
 
+This data is for now validated in server app code.
 
 ## Installation
 
@@ -251,6 +252,8 @@ Of course, instead of rebuilding database, you can change some seat numbers in t
 
 * Some integration and unit test have been written. Due to end of my university semester and lack of time, there are some important classes and operations that have not been tested well (mainly seat reserving process).
 Well, next step to improve the app should be to test it better.
+
+* Data mentioned earlier (as first/last name) is validated in server code - some of validate cases may or should be validated also in the database - for example dbms should be taking care if there are not two different ticket types with the same name valid (column "valid" in table ticket_types) at the same time. Some more database constraints should be written.
 
 * Endpoint returning screening list returns all the screenings, that the app is able to find - this could be paginated. Such approach can be important for app and client 
   performance if there is a lot of search results. I could do it in next step.   
