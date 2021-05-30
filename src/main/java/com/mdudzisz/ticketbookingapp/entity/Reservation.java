@@ -1,6 +1,8 @@
-package com.mdudzisz.ticketbookingapp.model;
+package com.mdudzisz.ticketbookingapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.mdudzisz.ticketbookingapp.service.TimestampSerializer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,6 +28,7 @@ public class Reservation {
     protected String lastName;
 
     @Column(name = "done")
+    @JsonSerialize(using = TimestampSerializer.class)
     protected Timestamp done;
 
     @ManyToOne

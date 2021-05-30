@@ -1,6 +1,6 @@
 package com.mdudzisz.ticketbookingapp.service;
 
-import com.mdudzisz.ticketbookingapp.model.Screening;
+import com.mdudzisz.ticketbookingapp.entity.Screening;
 import com.mdudzisz.ticketbookingapp.repository.ScreeningRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
 package com.mdudzisz.ticketbookingapp.service;
 
-import com.mdudzisz.ticketbookingapp.model.Reservation;
-import com.mdudzisz.ticketbookingapp.model.Screening;
-import lombok.Data;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.mdudzisz.ticketbookingapp.entity.Reservation;
+import com.mdudzisz.ticketbookingapp.entity.Screening;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +19,7 @@ public class ReservationConfirmation extends Reservation {
 
     private BigDecimal amountToPay = new BigDecimal(BigInteger.ZERO);
 
+    @JsonSerialize(using = TimestampSerializer.class)
     private Timestamp shouldBePaidUntil;
 
     protected ReservationConfirmation(Reservation reservation) {
@@ -46,12 +47,12 @@ public class ReservationConfirmation extends Reservation {
     }
 
     private static Timestamp calcDateToPayUntil(Screening screening) {
-        final int minutesToAdd = -30;
+        final int minutesToAddToScreeningTime = -5;
 
         Calendar screeningCalendar = new GregorianCalendar();
         screeningCalendar.setTimeInMillis(screening.getDate().getTime());
 
-        screeningCalendar.add(Calendar.MINUTE, minutesToAdd);
+        screeningCalendar.add(Calendar.MINUTE, minutesToAddToScreeningTime);
 
         return new Timestamp(screeningCalendar.getTimeInMillis());
     }

@@ -1,4 +1,4 @@
-package com.mdudzisz.ticketbookingapp.model;
+package com.mdudzisz.ticketbookingapp.entity;
 
 import lombok.*;
 

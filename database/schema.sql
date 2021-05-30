@@ -1,3 +1,7 @@
+DROP SCHEMA IF EXISTS cinema;
+
+CREATE SCHEMA cinema AUTHORIZATION sa;
+
 DROP TABLE IF EXISTS reservation_tickets;
 DROP TABLE IF EXISTS ticket_types;
 DROP TABLE IF EXISTS reservation_tickets;
@@ -26,8 +30,6 @@ CREATE TABLE seat_rows (
   primary key (room_id, row_nr),
   foreign key (room_id) references rooms(id)
 );
-
--- TO DO validate seat rows
 
 CREATE TABLE screenings (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -73,6 +75,6 @@ CREATE TABLE reservation_tickets (
 );
 
 
--- TO DO constraint, that seat_nr <= row_nr
 -- TO DO constraint, that there are no 2 same ticket
 -- type_name valid at the same time
+

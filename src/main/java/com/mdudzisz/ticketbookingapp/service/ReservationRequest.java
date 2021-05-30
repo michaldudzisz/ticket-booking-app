@@ -1,22 +1,19 @@
 package com.mdudzisz.ticketbookingapp.service;
 
-import com.mdudzisz.ticketbookingapp.model.*;
+import com.mdudzisz.ticketbookingapp.entity.*;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Data
 public class ReservationRequest {
 
     public static final int MIN_NAME_LENGTH = 3;
-    public static final String SINGLE_DASHED_SURNAME = "^[A-ZĄĘĆŃÓŚŹŻ][a-ząęćńóśźż]{2,}-[A-ZĄĘĆŃÓŚŹŻ][a-ząęćńóśźż]{2,}$";
-    public static final String ONE_WORD_NAME = "^[A-ZĄĘĆŃÓŚŹŻ][a-ząęćńóśźż]{2,}$";
+    public static final String SINGLE_DASHED_SURNAME = "^[A-ZĄĘĆŁŃÓŚŹŻ][a-ząęćłńóśźż]{2,}-[A-ZĄĘĆŁŃÓŚŹŻ][a-ząęćłńóśźż]{2,}$";
+    public static final String ONE_WORD_NAME = "^[A-ZĄĘĆŁŃÓŚŹŻ][a-ząęćłńóśźż]{2,}$";
 
     private String firstName;
 
@@ -64,6 +61,7 @@ public class ReservationRequest {
                     "Last name should have at least 3 characters starting with capital letter " +
                             "or consist of two such parts separated with single dash.");
     }
+
 
     public Reservation parseReservation(List<TicketType> availableTicketTypes) {
 

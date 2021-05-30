@@ -1,7 +1,7 @@
 package com.mdudzisz.ticketbookingapp.repository;
 
-import com.mdudzisz.ticketbookingapp.model.BookedSeat;
-import com.mdudzisz.ticketbookingapp.model.BookedSeatId;
+import com.mdudzisz.ticketbookingapp.entity.BookedSeat;
+import com.mdudzisz.ticketbookingapp.entity.BookedSeatId;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

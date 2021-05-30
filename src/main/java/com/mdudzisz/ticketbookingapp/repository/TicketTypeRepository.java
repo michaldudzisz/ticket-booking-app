@@ -1,6 +1,6 @@
 package com.mdudzisz.ticketbookingapp.repository;
 
-import com.mdudzisz.ticketbookingapp.model.TicketType;
+import com.mdudzisz.ticketbookingapp.entity.TicketType;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

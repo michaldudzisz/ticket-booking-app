@@ -1,5 +1,7 @@
-package com.mdudzisz.ticketbookingapp.model;
+package com.mdudzisz.ticketbookingapp.service;
 
+import com.mdudzisz.ticketbookingapp.entity.BookedSeat;
+import com.mdudzisz.ticketbookingapp.entity.SeatRow;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class RoomPlan {
 
     private void markRequestedSeats(List<BookedSeat> seats) {
         for (BookedSeat seat : seats)
-            seatingSchema.get(seat.getRowNr()).set(seat.getSeatNr() - 1, true);
+            seatingSchema.get(seat.getRowNr()).set(seat.getSeatNr() - 1, false);
     }
 
     private boolean checkIfNoSingleSeatsLefts() {

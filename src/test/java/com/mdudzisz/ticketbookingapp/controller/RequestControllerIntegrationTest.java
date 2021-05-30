@@ -1,14 +1,16 @@
 package com.mdudzisz.ticketbookingapp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mdudzisz.ticketbookingapp.model.Movie;
-import com.mdudzisz.ticketbookingapp.model.Screening;
+import com.mdudzisz.ticketbookingapp.entity.Movie;
+import com.mdudzisz.ticketbookingapp.entity.Screening;
 import com.mdudzisz.ticketbookingapp.service.ScreeningsListingService;
+import com.mdudzisz.ticketbookingapp.service.SeatBookingService;
 import com.mdudzisz.ticketbookingapp.service.SortedScreeningListing;
 import com.mdudzisz.ticketbookingapp.service.TimeInterval;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -37,28 +39,32 @@ public class RequestControllerIntegrationTest {
     @MockBean
     private ScreeningsListingService screeningsListingService;
 
-    private final SortedScreeningListing serviceResult = new SortedScreeningListing();
+    @MockBean
+    private SeatBookingService seatBookingService;
+
+    private SortedScreeningListing serviceResult = new SortedScreeningListing();
 
     @Before
     public void setUp() {
+
         serviceResult.addScreening(new Screening(1, 1,
-                new Timestamp(parseDateTime("2021-05-17T12:00:00").getTimeInMillis()),
+                new Timestamp(parseDateTime("2121-05-17T12:00:00").getTimeInMillis()),
                 new Movie(1, "La Vita E Belle", "A nice movie.")));
 
         serviceResult.addScreening(new Screening(1, 1,
-                new Timestamp(parseDateTime("2021-05-17T14:00:00").getTimeInMillis()),
+                new Timestamp(parseDateTime("2121-05-17T14:00:00").getTimeInMillis()),
                 new Movie(1, "La Vita E Belle", "A nice movie.")));
 
         serviceResult.addScreening(new Screening(1, 1,
-                new Timestamp(parseDateTime("2021-05-17T14:00:00").getTimeInMillis()),
+                new Timestamp(parseDateTime("2121-05-17T14:00:00").getTimeInMillis()),
                 new Movie(2, "Gladiator", "A cool movie.")));
     }
 
     @Test
     public void listScreeningsTest_validTwoParamQuery() throws Exception {
 
-        final String fromString = "2021-05-17T12:00:00";
-        final String toString = "2021-05-31T12:00:00";
+        final String fromString = "2121-05-17T12:00:00";
+        final String toString = "2121-05-31T12:00:00";
 
         Map<String, String> query = Map.of("from", fromString, "to", toString);
 

@@ -52,7 +52,7 @@ public class TimeIntervalTest {
 
         ResponseStatusException exc =
                 assertThrows(ResponseStatusException.class, () -> TimeInterval.fromQueryMap(queryMap));
-        assertEquals(HttpStatus.BAD_REQUEST.value(), exc.getRawStatusCode());
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), exc.getRawStatusCode());
     }
 
     @Test

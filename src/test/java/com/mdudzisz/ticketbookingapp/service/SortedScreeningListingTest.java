@@ -1,8 +1,8 @@
 package com.mdudzisz.ticketbookingapp.service;
 
 import com.google.common.collect.SortedMultiset;
-import com.mdudzisz.ticketbookingapp.model.Movie;
-import com.mdudzisz.ticketbookingapp.model.Screening;
+import com.mdudzisz.ticketbookingapp.entity.Movie;
+import com.mdudzisz.ticketbookingapp.entity.Screening;
 import org.junit.Before;
 import org.junit.Test;
 

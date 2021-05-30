@@ -1,7 +1,7 @@
 package com.mdudzisz.ticketbookingapp.service;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.mdudzisz.ticketbookingapp.model.Screening;
+import com.mdudzisz.ticketbookingapp.entity.Screening;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

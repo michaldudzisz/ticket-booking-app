@@ -1,6 +1,6 @@
 package com.mdudzisz.ticketbookingapp.repository;
 
-import com.mdudzisz.ticketbookingapp.model.Screening;
+import com.mdudzisz.ticketbookingapp.entity.Screening;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,8 @@
-package com.mdudzisz.ticketbookingapp.model;
+package com.mdudzisz.ticketbookingapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.mdudzisz.ticketbookingapp.service.TimestampSerializer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +23,7 @@ public class Screening {
 
     private int roomId;
 
+    @JsonSerialize(using = TimestampSerializer.class)
     private Timestamp date;
 
     @ManyToOne(fetch = FetchType.EAGER)

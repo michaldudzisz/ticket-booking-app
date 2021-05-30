@@ -1,7 +1,7 @@
 package com.mdudzisz.ticketbookingapp.repository;
 
-import com.mdudzisz.ticketbookingapp.model.Movie;
-import com.mdudzisz.ticketbookingapp.model.Screening;
+import com.mdudzisz.ticketbookingapp.entity.Movie;
+import com.mdudzisz.ticketbookingapp.entity.Screening;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

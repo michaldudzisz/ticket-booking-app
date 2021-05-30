@@ -17,6 +17,8 @@ public class TimeInterval {
     private final static String QUERY_FROM_TAG = "from";
     private final static String QUERY_TO_TAG = "to";
 
+    private final static int MINUTES_BEFORE_CLOSEST_SCREENING = 15;
+
     private final Timestamp from;
     private final Timestamp to;
 
@@ -27,7 +29,7 @@ public class TimeInterval {
         } else {
             validateQueryTags(queryMap);
             try {
-                interval = parseValidQueryParams(queryMap);
+                interval = parseQueryWithValidTags(queryMap);
             } catch (IllegalArgumentException e) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unsupported query params.");
             }
@@ -35,19 +37,16 @@ public class TimeInterval {
         return interval;
     }
 
-    private TimeInterval(Timestamp start, Timestamp end) {
-        if (start.getTime() <= end.getTime()) {
-            from = start;
-            to = end;
-        } else {
-            throw new IllegalArgumentException("End time in time interval cannot anticipate start time.");
-        }
+    public TimeInterval(Timestamp start, Timestamp end) {
+        from = start;
+        to = end;
     }
 
     private static TimeInterval createIntervalWithinDayFromNow() {
         final int daysToAdd = 1;
 
         Calendar nowCalendar = new GregorianCalendar();
+        nowCalendar.add(Calendar.MINUTE, MINUTES_BEFORE_CLOSEST_SCREENING);
         Timestamp now = new Timestamp(nowCalendar.getTimeInMillis());
 
         nowCalendar.add(Calendar.DAY_OF_MONTH, daysToAdd);
@@ -58,12 +57,17 @@ public class TimeInterval {
 
     private static void validateQueryTags(Map<String, String> queryMap) {
         checkIfTwoTags(queryMap);
-        CheckIfValidTagsNames(queryMap);
+        checkIfValidTagsNames(queryMap);
     }
 
-    private static TimeInterval parseValidQueryParams(Map<String, String> queryMap) {
+    private static TimeInterval parseQueryWithValidTags(Map<String, String> queryMap) {
         Timestamp from = new Timestamp(parseDateTime(queryMap.get(QUERY_FROM_TAG)).getTimeInMillis());
         Timestamp to = new Timestamp(parseDateTime(queryMap.get(QUERY_TO_TAG)).getTimeInMillis());
+
+        checkIfToGreaterThanFrom(from, to);
+
+        from = ensureThatFromIsAtLeast15MinsFromNow(from);
+
         return new TimeInterval(from, to);
     }
 
@@ -73,7 +77,7 @@ public class TimeInterval {
                     "Unsupported query string - should have 2 params.");
     }
 
-    private static void CheckIfValidTagsNames(Map<String, String> queryMap) {
+    private static void checkIfValidTagsNames(Map<String, String> queryMap) {
         Set<String> allowedTags = Set.of(QUERY_FROM_TAG, QUERY_TO_TAG);
 
         Optional<Map.Entry<String, String>> wrongQueryParamOpt = queryMap.entrySet().stream()
@@ -82,5 +86,21 @@ public class TimeInterval {
 
         if (wrongQueryParamOpt.isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unsupported query tags.");
+    }
+
+    private static void checkIfToGreaterThanFrom(Timestamp from, Timestamp to) {
+        if (from.getTime() > to.getTime())
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                    "Screenings time interval should be a valid time interval.");
+    }
+
+    private static Timestamp ensureThatFromIsAtLeast15MinsFromNow(Timestamp from) {
+        Calendar firstAvailableFromCalendar = new GregorianCalendar();
+        firstAvailableFromCalendar.add(Calendar.MINUTE, MINUTES_BEFORE_CLOSEST_SCREENING);
+
+        if (from.getTime() < firstAvailableFromCalendar.getTimeInMillis())
+            return new Timestamp(firstAvailableFromCalendar.getTimeInMillis());
+        else
+            return from;
     }
 }

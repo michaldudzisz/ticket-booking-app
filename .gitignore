@@ -33,5 +33,6 @@ build/
 .vscode/
 
 ### Project ###
+*.log
 /database/cinema.mv.db
 /database/cinema.trace.db
