@@ -206,7 +206,7 @@ This data is for now validated in server app code.
 
 If you don't have Java and Maven on your machine, you can run `sudo apt-get install maven` in your terminal - it should download both required Maven and Java Development Kit.
 
-**Important** - in next step I assumed, that your Maven repository is located in default location which is `~/.m2/repository` on Linux - if it is different on your machine, change corresponding variable in `/database/database_setup.sh` script (on Mac it should be `/Users/<user_name>/.m2`)
+**Important** - in next step I assumed, that your Maven repository is located in default location which is `~/.m2/repository` for Linux - if it is different on your machine, change corresponding path in `/database/database_setup.sh` script (on Mac it should be `/Users/<user_name>/.m2/repository`)
 
 Next step is to run included in project script:
 
@@ -226,7 +226,7 @@ from project main directory.
 
 Simple script performing request has been added to a project. Please run it using command:
 
-`$ sh user_case.sh`
+`$ sh use_case.sh`
 
 from project main directory.
 
